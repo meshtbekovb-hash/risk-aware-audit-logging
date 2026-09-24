@@ -196,45 +196,56 @@ def fig8_scheme_comparison():
     """
     Сравнение схем защиты журнала на тестовом периоде (168 392 записи): стоимость и покрытие.
     Данные из block_baseline_results.csv; время дано как отношение к обычной записи в том же запуске.
-    Одна колонка IEEE - панели друг под другом (были рядом, на 3.5 дюйма стали бы нечитаемы).
+    Одна колонка IEEE - панели друг под другом, все подписи не меньше 8 pt.
+
+    Нижняя панель разводит два вида покрытия вредоносных записей (термины статьи):
+      - покрыто хоть как-то (блочной меткой или поэлементной цепочкой);
+      - покрыто с точностью до одной записи (exact-record integrity coverage).
+    У блочной схемы первое 100%, второе 0%; у гибрида первое 100%, второе - как у поэлементной
+    цепочки для рискованных дней (те же дни с r >= tau, поэтому то же значение).
     """
     data = {r["scheme"]: r for r in read_csv("block_baseline_results.csv")}
     plain = float(data["plain log"]["time_ms"])
-    picks = [("Plain\nlog", "plain log", "#9e9e9e"),
-             ("Per-record\n(all)", "full per-record HMAC chain", "#c44e52"),
-             ("Block\n(all)", "block HMAC, B=1000", "#4c72b0"),
-             ("Per-record\n(high-risk)", "risk-aware per-record chain only, tau=0.3", "#dd8452"),
-             ("Hybrid", "hybrid: block B=1000 for all + per-record chain tau=0.3", "#55a868")]
+    risky = "risk-aware per-record chain only, tau=0.3"
+    # (подпись, строка CSV, цвет, из какой строки брать покрытие до записи; None = 0)
+    picks = [("Plain\nlog", "plain log", "#9e9e9e", None),
+             ("Record,\nall", "full per-record HMAC chain", "#c44e52", "full per-record HMAC chain"),
+             ("Block,\nall", "block HMAC, B=1000", "#4c72b0", None),
+             ("Record,\nalert\ndays", risky, "#dd8452", risky),
+             ("Hybrid", "hybrid: block B=1000 for all + per-record chain tau=0.3", "#55a868", risky)]
     labels = [p[0] for p in picks]
     ratio = [float(data[p[1]]["time_ms"]) / plain for p in picks]
-    covered = [float(data[p[1]]["malicious_covered_pct"]) for p in picks]
+    any_cov = [float(data[p[1]]["malicious_covered_pct"]) for p in picks]
+    exact_cov = [float(data[p[3]]["malicious_covered_pct"]) if p[3] else 0.0 for p in picks]
     colors = [p[2] for p in picks]
+    x = list(range(len(picks)))
 
-    fig, (a1, a2) = plt.subplots(2, 1, figsize=(COL_WIDTH, 5.2))
-    a1.bar(range(len(picks)), ratio, color=colors, width=0.6)
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(COL_WIDTH, 5.4))
+    a1.bar(x, ratio, color=colors, width=0.6)
     a1.axhline(1, color="gray", linestyle=":", linewidth=1)
     for i, v in enumerate(ratio):
-        a1.text(i, v + 0.12, f"{v:.2f}x", ha="center", fontsize=7)
+        a1.text(i, v + 0.12, f"{v:.2f}x", ha="center", fontsize=8)
     a1.set_ylabel("Write time,\nx plain log", fontsize=AXIS_FS)
-    a1.set_ylim(0, max(ratio) * 1.22)
-    a1.tick_params(labelsize=TICK_FS)
+    a1.set_ylim(0, max(ratio) * 1.25)
 
-    a2.bar(range(len(picks)), covered, color=colors, width=0.6)
-    # Под процентом подписана гранулярность: «100%» у блочной и поэлементной схемы означает разную локализацию подделки.
-    # Подпись последнего столбца (Hybrid) короче остальных - у правого края колонки длинный текст обрезался бы полем графика.
-    granularity = ["", "record", "block", "record,\nhigh-risk only", "block+record"]
-    for i, v in enumerate(covered):
-        pct = f"{v:.0f}%" if v in (0, 100) else f"{v:.1f}%"
-        a2.text(i, v + 3, f"{pct}\n({granularity[i]})" if granularity[i] else pct,
-                ha="center", fontsize=6.5)
+    w = 0.38
+    a2.bar([i - w / 2 for i in x], any_cov, width=w, color="#b0b0b0", edgecolor="black", linewidth=0.5,
+           label="block or record level")
+    a2.bar([i + w / 2 for i in x], exact_cov, width=w, color="#333333", label="record level (exact)")
+    # Подписываем только промежуточные значения (0% и 100% читаются по оси и сетке), внутри
+    # тёмного столбца вертикально: снаружи подпись налезала бы на соседний столбец 100%.
+    for i in x:
+        if 0 < exact_cov[i] < 100:
+            a2.text(i + w / 2, exact_cov[i] / 2, f"{exact_cov[i]:.1f}%", ha="center", va="center",
+                    rotation=90, color="white", fontsize=8)
     a2.set_ylabel("Malicious records\ncovered, %", fontsize=AXIS_FS)
-    a2.set_xlim(-0.7, len(picks) - 0.3)
-    a2.set_ylim(0, 133)
-    a2.tick_params(labelsize=TICK_FS)
+    a2.set_ylim(0, 118)
+    a2.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.30), ncol=1, frameon=False)
 
     for ax in (a1, a2):
-        ax.set_xticks(range(len(picks)))
-        ax.set_xticklabels(labels, fontsize=7)
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels, fontsize=TICK_FS)
+        ax.tick_params(labelsize=TICK_FS)
         ax.grid(alpha=0.3, axis="y")
     save(fig, "fig8_scheme_comparison.png")
 

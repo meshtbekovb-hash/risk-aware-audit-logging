@@ -108,7 +108,12 @@ keys = ["plain log", "full per-record HMAC chain", "block HMAC, B=1000",
         "risk-aware per-record chain only, tau=0.3", "hybrid: block B=1000 for all + per-record chain tau=0.3"]
 print("\nfig8:", [(a["ylabel"], a["xticklabels"]) for a in axs])
 check(all(close(h, float(data[k]["time_ms"]) / plain, 1e-3) for h, k in zip(axs[0]["bars"], keys)), "fig8: левый график = время/обычная запись")
-check(all(close(h, float(data[k]["malicious_covered_pct"]), 1e-3) for h, k in zip(axs[1]["bars"], keys)), "fig8: правый график = % вредоносных записей под защитой")
+# Нижний график: сначала 5 столбцов «покрыто блоком или записью», затем 5 «покрыто до записи».
+exact_src = [None, "full per-record HMAC chain", None, keys[3], keys[3]]   # гибрид: те же дни, что у keys[3]
+exp_any = [float(data[k]["malicious_covered_pct"]) for k in keys]
+exp_exact = [float(data[k]["malicious_covered_pct"]) if k else 0.0 for k in exact_src]
+check(len(axs[1]["bars"]) == 10 and all(close(h, e, 1e-3) for h, e in zip(axs[1]["bars"], exp_any + exp_exact)),
+      "fig8: нижний график = % вредоносных записей, покрытых блоком или записью / только до записи")
 
 # ---------------- fig6 и fig7 ----------------
 cc.main()
