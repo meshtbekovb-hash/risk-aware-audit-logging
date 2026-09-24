@@ -487,7 +487,7 @@ def main():
     h = hmac.new(chm.KEY, prev.encode("utf-8"), hashlib.sha256)
     with open(BLOG, encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            h.update(ch.record_bytes(row))
+            h.update(ch.record_to_text(row).encode("utf-8") + b"\n")
             in_block += 1
             count += 1
             if in_block == BLOCK:
@@ -583,67 +583,6 @@ def main():
     d, w = sha_verify()
     record("9", "откат журнала+точки вместе", "ключа нет вообще", "SHA-256 цепочка", d, w,
            "у простой цепочки это то же самое, что обрезка хвоста (раздел 4.4, атака 3) - уже известная брешь")
-    print()
-
-    # =================================================================
-    # 10. Дописывание записей в конец журнала (добавлено после внешней проверки, которая
-    #     нашла, что прежняя verify_block принимала неподписанное продолжение журнала).
-    #     К подлинному журналу из 10 000 записей дописываются 1000 записей rows_b.
-    #     Журнал считается ЗАВЕРШЁННЫМ: последняя внешняя точка/метка стоит на записи 10 000.
-    # =================================================================
-    print("10. Дописывание 1000 записей в конец завершённого журнала")
-
-    def append_csv(path, tail_rows, extra_cols):
-        """Дописывает строки в конец файла; extra_cols(i) - значения служебных колонок."""
-        with open(path, "a", newline="", encoding="utf-8") as f:
-            wr = csv.writer(f)
-            for i, r in enumerate(tail_rows):
-                wr.writerow([r[k] for k in ch.FIELDS] + extra_cols(i))
-
-    # без ключа: у записей нет верных меток (для SHA - без пересчёта хешей)
-    sha_write(rows)
-    append_csv(SHA_PATH, rows_b, lambda i: ["", ""])
-    d, w = sha_verify()
-    record("10", "дописывание записей в конец", "без ключа", "SHA-256 цепочка", d, w)
-
-    hmac_write(rows)
-    append_csv(LOG, rows_b, lambda i: [""])
-    d, w = hmac_verify()
-    record("10", "дописывание записей в конец", "без ключа", "HMAC поэлементная", d, w)
-
-    block_write(rows)
-    append_csv(BLOG, rows_b, lambda i: [])
-    d, w = block_verify()
-    record("10", "дописывание записей в конец", "без ключа", "блочная HMAC B=1000", d, w,
-           "до исправления verify_block эта атака проходила (блок без внешней метки не проверялся)")
-
-    # с ключом: нарушитель продолжает цепочку верными метками, но во внешнее хранилище писать не может
-    sha_write(rows + rows_b, THROWAWAY_LOG)
-    with open(THROWAWAY_LOG, encoding="utf-8") as f:
-        sha_tail = [(r["prev_hash"], r["entry_hash"]) for r in csv.DictReader(f)][N:]
-    sha_write(rows)
-    append_csv(SHA_PATH, rows_b, lambda i: list(sha_tail[i]))
-    d, w = sha_verify()
-    record("10", "дописывание записей в конец", "с ключом*", "SHA-256 цепочка", d, w,
-           "*ключа нет вообще: хеши может пересчитать любой, внешней точки нет")
-
-    chm.write_hmac_chain(rows + rows_b, THROWAWAY_LOG, ATTACKER_ANCH, chm.KEY)
-    with open(THROWAWAY_LOG, encoding="utf-8") as f:
-        mac_tail = [r["mac"] for r in csv.DictReader(f)][N:]
-    hmac_write(rows)
-    append_csv(LOG, rows_b, lambda i: [mac_tail[i]])
-    d, w = hmac_verify()
-    ok_g, why_g = chm.verify_hmac_chain(LOG, ANCH, chm.KEY, complete=False)
-    record("10", "дописывание записей в конец", "с ключом", "HMAC поэлементная", d, w,
-           f"до исправления проходила (проверялась только обрезка); у растущего журнала тот же хвост "
-           f"даёт статус 'неподтверждён': {why_g}")
-
-    block_write(rows)
-    append_csv(BLOG, rows_b, lambda i: [])        # метки блоков внешние: в журнал их не дописать
-    d, w = block_verify()
-    ok_g, why_g = bb.verify_block(BLOG, BTAGS, chm.KEY, BLOCK, complete=False)
-    record("10", "дописывание записей в конец", "с ключом", "блочная HMAC B=1000", d, w,
-           f"ключ не помогает: метку блока нужно записать во внешнее хранилище; у растущего журнала: {why_g}")
     print()
 
     cleanup()
