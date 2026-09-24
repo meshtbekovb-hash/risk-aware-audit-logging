@@ -1,0 +1,4 @@
+cutoff,fpr,events_in_chain,share_in_chain_pct,bad_events_protected_pct,riskaware_time_ms,riskaware_size_kb,full_chain_time_ms,full_chain_size_kb,time_saving_pct,size_saving_pct,extra_time_vs_plain_pct,extra_size_vs_plain_pct
+0.3,0.00969,12619,4.21,27.5,680.7,22506.9,2201.3,58916.1,69.1,61.8,16.5,7.7
+0.65,0.00255,4503,1.5,6.9,628.0,21476.5,2201.3,58916.1,71.5,63.5,7.5,2.7
+0.95,0.00039,456,0.15,1.1,589.0,20962.8,2201.3,58916.1,73.2,64.4,0.8,0.3

@@ -1,0 +1,10 @@
+rule,param,records_selected,total_records,share_selected_pct,malicious_selected,total_malicious,malicious_covered_pct,efficiency_coverage_per_share,coverage_ci_lo_pct,coverage_ci_hi_pct,note
+risk model,tau=0.3,7228,168392,4.29,,3985,31.8,7.413,,,"перенесено из riskaware_test_results.csv, не пересчитывалось"
+risk model,tau=0.65,2476,168392,1.47,,3985,6.6,4.49,,,"перенесено из riskaware_test_results.csv, не пересчитывалось"
+risk model,tau=0.95,244,168392,0.14,,3985,1.6,11.429,,,"перенесено из riskaware_test_results.csv, не пересчитывалось"
+random selection,k=7228 (as tau=0.3),7228,168392,4.29,,3985,4.3,1.003,3.71,4.92,"1000 повторов без возвращения, seed=42, интервал по эмпирическим перцентилям 2.5/97.5"
+random selection,k=2476 (as tau=0.65),2476,168392,1.47,,3985,1.47,1.0,1.13,1.83,"1000 повторов без возвращения, seed=42, интервал по эмпирическим перцентилям 2.5/97.5"
+random selection,k=244 (as tau=0.95),244,168392,0.14,,3985,0.14,0.994,0.05,0.28,"1000 повторов без возвращения, seed=42, интервал по эмпирическим перцентилям 2.5/97.5"
+device off-hours (record's own time),8-18,13056,168392,7.75,354,3985,8.9,1.146,,,"запись отбирается, если её собственное время вне 8:00-18:00"
+off-hours: logon OR device,8-18,88910,168392,52.8,2256,3985,56.6,1.072,,,"запись отбирается, если она сама вне часов, или в этот же день у пользователя был вход (Logon) вне часов"
+all Connect events,-,84473,168392,50.16,1996,3985,50.1,0.998,,,"запись отбирается, если activity == 'Connect'"

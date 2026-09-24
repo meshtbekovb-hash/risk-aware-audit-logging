@@ -1,0 +1,4 @@
+tau,flagged_days_with_device_events,days_never_crossed_streaming,total_events_in_flagged_days,events_needing_backfill,share_events_needing_backfill_pct,mean_backfill_fraction_per_day_pct,median_backfill_fraction_per_day_pct
+0.3,1453,0,7228,2819,39.0,28.92,33.33
+0.65,387,0,2476,520,21.0,12.25,0.0
+0.95,54,0,244,120,49.18,35.74,50.0

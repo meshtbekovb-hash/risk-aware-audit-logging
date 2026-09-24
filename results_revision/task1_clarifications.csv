@@ -1,0 +1,23 @@
+question,item,value,source
+q1,test_period_start,2010-10-01,cert_riskaware_test.py / hs.TEST_START
+q1,device_events_total_test_period,168392,logs/cert_riskaware_test.txt
+q1,device_events_malicious_test_period,3985,logs/cert_riskaware_test.txt
+q1,malicious_event_definition,"device.csv record (Connect AND Disconnect, no activity filter) whose (user,day) falls inside that user's labeled insider attack window, restricted to the test period",cert_riskaware.py:load_test_events + cert_ablation.py:scenario_of
+q1,bad_events_protected_pct_tau030,31.8,riskaware_test_results.csv
+q2,normal_users_total_test_part,888,cert_user_level2.py Setup.normal
+q2,normal_users_with_device_connect_in_TEST_period,182,cert_observed.py verification rerun
+q2,normal_users_with_device_connect_in_TRAINING_period,182,cert_observed.py verification rerun (profile dev_total>0)
+q2,overlap_of_the_two_182_sets,182,cert_observed.py verification rerun
+q2,insiders_leak_into_normal_denominator,False,cert_observed.py verification rerun (st.windows disjoint from st.normal)
+q3,hmac_payload_fields_per_record_chain,"id|date|user|pc|activity|prev_mac",cert_chain.py:FIELDS + cert_chain_hmac.py:mac_of
+q3,hmac_payload_fields_block_scheme,"prev_block_tag then id|date|user|pc|activity\n per record in block",cert_block_baseline.py:write_block_hmac
+q3,adjacent_blocks_linked,True (next block HMAC seeded with previous block's tag),cert_block_baseline.py:write_block_hmac
+q3,tag_encoding,hex (hexdigest()),cert_chain_hmac.py / cert_block_baseline.py
+q3,key_storage,"hardcoded constant KEY in cert_chain_hmac.py source (test only); comment says real system would keep it outside the log store",cert_chain_hmac.py:KEY
+q3,key_rotation,none implemented,cert_chain_hmac.py / cert_block_baseline.py
+q3,checkpoint_contents_per_record_scheme,"(record_count_so_far, mac_of_last_record)",cert_chain_hmac.py:write_hmac_chain
+q3,checkpoint_contents_block_scheme,"(block_index, cumulative_record_count, block_tag)",cert_block_baseline.py:write_block_hmac
+q3,trailing_partial_segment_handling,"both write_hmac_chain and write_block_hmac always flush a final anchor/tag for whatever remains at end of the write() call; the 'unclosed block' attack scenario is simulated separately by withholding the last anchor from the external store",cert_chain_hmac.py attack #7 / cert_block_baseline.py attack #7
+q4,weights_tuning_history_versioned,not available (no git repo in project folder),git status check
+q4,weights_tuning_summary,"features chosen by domain reasoning about the 3 scenarios; weights adjusted 3 times and novelty thresholds moved 5%->10% (night logon) and 2%->5% (weekend) after viewing metrics computed on the full dataset including what became the test period",CLAUDE.md section 4 (ИСПРАВЛЕНО) / FULL_REPORT_for_review.md 3.3
+q5,tie_break_rule,"select_on_validation keeps max (recall, fpr) as a tuple; ties on recall broken by higher fpr (closest to the 3% target from below); remaining ties broken by earliest in iteration order: ascending cutoff, then N in [1,2,3,4,5], then W in [7,14,30]",cert_user_level2.py:select_on_validation

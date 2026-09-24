@@ -1,0 +1,7 @@
+config,weights,cutoff,TP,FN,FP,TN,precision,recall,fpr,macro_recall,insiders_caught,insiders_total,false_users,tuned_weights
+logon,ручные веса,0.75,3,737,43,140350,0.0652,0.0041,0.00031,0.0137,3,35,14,"{'novel_off_hours': 0.45, 'novel_weekend': 0.3, 'novel_pc': 0.5, 'novel_dev_off_hours': 0.65, 'dev_spike': 0.3}"
+logon,веса с валидации,0.2,11,729,267,140126,0.0396,0.0149,0.0019,0.0502,5,35,45,"{'novel_off_hours': 0.2, 'novel_weekend': 0.1, 'novel_pc': 0.1}"
+device,ручные веса,0.65,55,685,332,140061,0.1421,0.0743,0.00236,0.2633,22,35,67,"{'novel_off_hours': 0.45, 'novel_weekend': 0.3, 'novel_pc': 0.5, 'novel_dev_off_hours': 0.65, 'dev_spike': 0.3}"
+device,веса с валидации,0.2,55,685,332,140061,0.1421,0.0743,0.00236,0.2633,22,35,67,"{'novel_dev_off_hours': 0.2, 'dev_spike': 0.1}"
+combined,ручные веса,0.6,55,685,402,139991,0.1204,0.0743,0.00286,0.2633,22,35,83,"{'novel_off_hours': 0.45, 'novel_weekend': 0.3, 'novel_pc': 0.5, 'novel_dev_off_hours': 0.65, 'dev_spike': 0.3}"
+combined,веса с валидации,0.2,55,685,610,139783,0.0827,0.0743,0.00434,0.2633,22,35,108,"{'novel_off_hours': 0.2, 'novel_weekend': 0.1, 'novel_pc': 0.1, 'novel_dev_off_hours': 0.2, 'dev_spike': 0.1}"

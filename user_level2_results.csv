@@ -1,0 +1,7 @@
+table,config,cutoff,N,W,H,val_recall,val_fpr,test_caught,test_total,test_recall,test_fpr,test_false_users
+main,logon,0.5,4,7,,0.2,0.0297,5,35,0.1429,0.0304,27
+main,device,0.65,2,7,,0.4286,0.0297,18,35,0.5143,0.0236,21
+main,logon+device,0.6,3,30,,0.4,0.0253,17,35,0.4857,0.0327,29
+hybrid,logon,0.5,4,7,,0.2,0.0297,5,35,0.1429,0.0304,27
+hybrid,device,0.65,2,7,,0.4286,0.0297,18,35,0.5143,0.0236,21
+hybrid,logon+device,0.6,3,30,1.0,0.5143,0.0297,19,35,0.5429,0.036,32

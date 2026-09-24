@@ -1,0 +1,12 @@
+scheme,time_ms,size_kb,records_covered_pct,malicious_covered_pct,localization
+plain log,329.6,11757.1,0,0,-
+full per-record HMAC chain,1614.4,22458.0,100,100,exact record
+"block HMAC, B=100",630.8,11883.2,100,100,block of 100 records
+"block HMAC, B=1000",633.9,11769.6,100,100,block of 1000 records
+"block HMAC, B=10000",632.4,11758.3,100,100,block of 10000 records
+"risk-aware per-record chain only, tau=0.3",411.2,12721.1,4.29,31.8,exact record (risky only)
+hybrid: block B=1000 for all + per-record chain tau=0.3,737.5,12733.6,100,100,"block for all, exact record for 4.29% risky"
+"risk-aware per-record chain only, tau=0.65",377.2,12087.3,1.47,6.6,exact record (risky only)
+hybrid: block B=1000 for all + per-record chain tau=0.65,692.5,12099.8,100,100,"block for all, exact record for 1.47% risky"
+"risk-aware per-record chain only, tau=0.95",346.9,11789.7,0.14,1.6,exact record (risky only)
+hybrid: block B=1000 for all + per-record chain tau=0.95,677.4,11802.2,100,100,"block for all, exact record for 0.14% risky"

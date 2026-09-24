@@ -1,0 +1,7 @@
+dataset,config,cutoff,N,W,insiders_total,insiders_caught,user_recall,recall_ci_lo,recall_ci_hi,normal_total,normal_false,user_fpr,fpr_ci_lo,fpr_ci_hi,obs_insiders_total,obs_insiders_caught,user_recall_observed,recall_obs_ci_lo,recall_obs_ci_hi,obs_normal_total,obs_normal_false,user_fpr_observed,fpr_obs_ci_lo,fpr_obs_ci_hi,recall_s1,recall_s2,recall_s3,recall_s4,excluded_insiders_start_before_train_end
+r5.2,logon,0.5,4,7,98,15,0.1531,0.095,0.2373,1865,68,0.0365,0.0289,0.046,98,15,0.1531,0.095,0.2373,1865,68,0.0365,0.0289,0.046,0/29,2/30,10/10,3/29,1
+"r4.2 (reference, честное разбиение, user_level2_results.csv)",logon,0.5,4,7,35,5,0.1429,0.0626,0.2938,888,27,0.0304,0.021,0.0439,35,5,0.1429,0.0626,0.2938,888,27,0.0304,0.021,0.0439,1/16,0/15,4/4,n/a (сценария 4 нет в r4.2),
+r5.2,device,0.65,2,7,98,30,0.3061,0.2236,0.4032,1865,48,0.0257,0.0195,0.034,73,30,0.411,0.3053,0.5255,369,48,0.1301,0.0995,0.1683,28/29,2/30,0/10,0/29,1
+"r4.2 (reference, честное разбиение, user_level2_results.csv)",device,0.65,2,7,35,18,0.5143,0.3557,0.6701,888,21,0.0236,0.0155,0.0359,35,18,0.5143,0.3557,0.6701,182,21,0.1154,0.0767,0.17,16/16,2/15,0/4,n/a (сценария 4 нет в r4.2),
+r5.2,logon+device,0.6,3,30,98,31,0.3163,0.2327,0.4138,1865,56,0.03,0.0232,0.0388,98,31,0.3163,0.2327,0.4138,1865,56,0.03,0.0232,0.0388,26/29,2/30,0/10,3/29,1
+"r4.2 (reference, честное разбиение, user_level2_results.csv)",logon+device,0.6,3,30,35,17,0.4857,0.3299,0.6443,888,29,0.0327,0.0228,0.0465,35,17,0.4857,0.3299,0.6443,888,29,0.0327,0.0228,0.0465,15/16,2/15,0/4,n/a (сценария 4 нет в r4.2),

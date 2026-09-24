@@ -1,0 +1,16 @@
+# CERT dataset files - licensed, not redistributed here. Download per README.
+logon.csv
+device.csv
+file.csv
+insiders.csv
+data_r52/
+
+# Python
+__pycache__/
+*.pyc
+
+# Old/scratch figures some scripts can still produce but that are not part of the paper
+OLD_not_for_paper_*.png
+fig1_pr_vs_threshold.png
+fig3_recall_by_scenario.png
+fig5_insider_level.png

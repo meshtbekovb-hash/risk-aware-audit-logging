@@ -1,0 +1,7 @@
+config,cutoff,insiders_caught,insiders_total,median_days_to_first_alert,false_users,false_users_pct,alerts_per_day_per_1000_users,caught_s1,total_s1,caught_s2,total_s2,caught_s3,total_s3
+logon,0.75,5,70,0,15,1.6,0.2,4,30,1,30,0,10
+device,0.3,65,70,0,118,13.0,6.89,30,30,29,30,6,10
+file,0.6,22,70,4.0,114,12.5,2.24,14,30,8,30,0,10
+logon+device,0.6,44,70,0.0,95,10.4,2.23,30,30,8,30,6,10
+device+file,0.6,64,70,0.0,133,14.6,6.04,30,30,28,30,6,10
+logon+device+file,0.6,65,70,0,150,16.5,6.8,30,30,29,30,6,10
