@@ -1,0 +1,45 @@
+target,adversary,hybrid_B,hybrid_ms,hybrid_commits,hybrid_area,dominated_measured_c0,example_dominator_measured,c_min_nondominated_measured_ms,dominated_model_c0,example_dominator_model,c_min_nondominated_model_ms
+all,no_key,1,996.2,168400,1.0,True,"per-record chain, all B=-",>1000,True,"block B=1 (модель): 953.5 ms, area 1.0",>1000
+all,no_key,2,752.3,84204,1.96,False,,0.0,False,,0.0
+all,no_key,5,620.3,33687,4.83,False,,0.0,True,"block B=4 (модель): 578.4 ms, area 4.0",0.005012
+all,no_key,10,573.2,16848,9.61,True,block B=5,0.001122,True,"block B=9 (модель): 508.9 ms, area 9.0",0.035481
+all,no_key,25,541.4,6744,23.97,True,block B=10,0.003981,True,"block B=23 (модель): 475.1 ms, area 23.0",0.125893
+all,no_key,50,529.5,3376,47.89,True,block B=25,0.019953,True,"block B=47 (модель): 464.0 ms, area 47.0",0.354813
+all,no_key,100,504.5,1692,95.75,True,block B=25,0.007943,True,"block B=95 (модель): 458.6 ms, area 95.0",0.630957
+all,no_key,250,523.1,682,239.22,True,block B=100,0.070795,True,"block B=239 (модель): 455.5 ms, area 238.9",3.162278
+all,no_key,500,507.5,345,478.33,True,block B=250,0.199526,True,"block B=478 (модель): 454.4 ms, area 477.7",7.079458
+all,no_key,1000,499.5,177,955.73,True,block B=250,0.316228,True,"block B=956 (модель): 453.9 ms, area 955.3",>1000
+all,no_key,10000,498.0,25,9492.73,True,block B=250,0.354813,True,"block B=9630 (модель): 453.4 ms, area 9492.4",>1000
+all,key,1,996.2,168400,1.0,True,block B=1,>1000,True,"block B=1 (модель): 953.5 ms, area 1.0",>1000
+all,key,2,752.3,84204,1.96,False,,0.0,False,,0.0
+all,key,5,620.3,33687,4.85,False,,0.0,True,"block B=4 (модель): 578.4 ms, area 4.0",0.005012
+all,key,10,573.2,16848,9.65,True,block B=5,0.001122,True,"block B=9 (модель): 508.9 ms, area 9.0",0.035481
+all,key,25,541.4,6744,24.05,True,block B=10,0.003981,True,"block B=24 (модель): 474.2 ms, area 24.0",0.251189
+all,key,50,529.5,3376,48.05,True,block B=25,0.019953,True,"block B=48 (модель): 463.8 ms, area 48.0",0.501187
+all,key,100,504.5,1692,96.02,True,block B=25,0.007943,True,"block B=96 (модель): 458.6 ms, area 96.0",0.794328
+all,key,250,523.1,682,239.81,True,block B=100,0.070795,True,"block B=239 (модель): 455.5 ms, area 238.9",3.162278
+all,key,500,507.5,345,479.42,True,block B=250,0.199526,True,"block B=479 (модель): 454.4 ms, area 478.7",7.943282
+all,key,1000,499.5,177,957.75,True,block B=250,0.316228,True,"block B=959 (модель): 453.9 ms, area 957.7",>1000
+all,key,10000,498.0,25,9508.65,True,block B=250,0.354813,True,"block B=9645 (модель): 453.4 ms, area 9507.8",>1000
+bad,no_key,1,996.2,168400,1.0,True,"per-record chain, all B=-",>1000,True,"block B=1 (модель): 953.5 ms, area 1.0",>1000
+bad,no_key,2,752.3,84204,1.68,False,,0.0,False,,0.0
+bad,no_key,5,620.3,33687,3.73,False,,0.0,True,"block B=3 (модель): 620.1 ms, area 3.0",0.0001
+bad,no_key,10,573.2,16848,7.14,True,block B=5,0.001122,True,"block B=7 (модель): 524.8 ms, area 7.0",0.007079
+bad,no_key,25,541.4,6744,17.37,True,block B=10,0.003981,True,"block B=17 (модель): 482.8 ms, area 17.0",0.019953
+bad,no_key,50,529.5,3376,34.42,True,block B=25,0.019953,True,"block B=34 (модель): 468.1 ms, area 34.0",0.039811
+bad,no_key,100,504.5,1692,68.52,True,block B=25,0.007943,True,"block B=68 (модель): 460.7 ms, area 68.0",0.056234
+bad,no_key,250,523.1,682,170.83,True,block B=100,0.070795,True,"block B=170 (модель): 456.3 ms, area 170.0",0.223872
+bad,no_key,500,507.5,345,341.35,True,block B=250,0.199526,True,"block B=341 (модель): 454.8 ms, area 340.9",0.354813
+bad,no_key,1000,499.5,177,682.38,True,block B=250,0.316228,True,"block B=683 (модель): 454.1 ms, area 682.3",0.707946
+bad,no_key,10000,498.0,25,6820.9,True,block B=250,0.354813,True,"block B=6890 (модель): 453.4 ms, area 6820.5",>1000
+bad,key,1,996.2,168400,1.0,True,block B=1,>1000,True,"block B=1 (модель): 953.5 ms, area 1.0",>1000
+bad,key,2,752.3,84204,1.72,False,,0.0,False,,0.0
+bad,key,5,620.3,33687,3.86,False,,0.0,True,"block B=3 (модель): 620.1 ms, area 3.0",0.0001
+bad,key,10,573.2,16848,7.42,True,block B=5,0.001122,True,"block B=7 (модель): 524.8 ms, area 7.0",0.007079
+bad,key,25,541.4,6744,17.99,True,block B=10,0.003981,True,"block B=17 (модель): 482.8 ms, area 17.0",0.019953
+bad,key,50,529.5,3376,35.6,True,block B=25,0.019953,True,"block B=35 (модель): 467.7 ms, area 35.0",0.044668
+bad,key,100,504.5,1692,70.6,True,block B=25,0.007943,True,"block B=70 (модель): 460.5 ms, area 70.0",0.063096
+bad,key,250,523.1,682,175.34,True,block B=100,0.070795,True,"block B=175 (модель): 456.2 ms, area 175.0",0.251189
+bad,key,500,507.5,345,350.03,True,block B=250,0.199526,True,"block B=350 (модель): 454.8 ms, area 349.9",0.398107
+bad,key,1000,499.5,177,698.51,True,block B=250,0.316228,True,"block B=698 (модель): 454.1 ms, area 697.5",0.707946
+bad,key,10000,498.0,25,6943.25,True,block B=250,0.354813,True,"block B=6977 (модель): 453.4 ms, area 6943.2",>1000

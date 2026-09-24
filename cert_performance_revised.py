@@ -247,7 +247,7 @@ def main():
             wt = csv.writer(t)
             wt.writerow(["block", "count", "tag"])
             for r in rows:
-                h.update(ch.record_to_text(r).encode("utf-8") + b"\n")
+                h.update(ch.record_bytes(r))
                 in_block += 1
                 count += 1
                 if in_block == BLOCK:
