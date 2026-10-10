@@ -1,0 +1,93 @@
+target,adversary,config,mean_ms,area,on_frontier,dominated_by
+all,no_key,"per-record chain, all B=-",928.6,1,True,
+all,no_key,block B=1,957.2,1,False,"per-record chain, all B=-"
+all,no_key,hybrid tau=0.30 B=1,996.2,1,False,"per-record chain, all B=-; block B=1"
+all,no_key,block B=2,694.2,2,True,
+all,no_key,hybrid tau=0.30 B=2,752.3,1.96,True,
+all,no_key,block B=5,555.6,5.0,True,
+all,no_key,hybrid tau=0.30 B=5,620.3,4.83,True,
+all,no_key,block B=10,505.3,10.0,True,
+all,no_key,hybrid tau=0.30 B=10,573.2,9.61,False,block B=5
+all,no_key,block B=25,466.8,25.0,True,
+all,no_key,hybrid tau=0.30 B=25,541.4,23.97,False,block B=10
+all,no_key,block B=50,495.4,50.0,False,block B=25
+all,no_key,hybrid tau=0.30 B=50,529.5,47.89,False,block B=10; block B=25
+all,no_key,block B=100,456.7,100.0,True,
+all,no_key,hybrid tau=0.30 B=100,504.5,95.75,False,block B=25; block B=50
+all,no_key,block B=250,446.5,249.91,True,
+all,no_key,hybrid tau=0.30 B=250,523.1,239.22,False,block B=10; block B=25; block B=50; block B=100
+all,no_key,block B=500,453.6,499.75,False,block B=250
+all,no_key,hybrid tau=0.30 B=500,507.5,478.33,False,block B=10; block B=25; block B=50; block B=100
+all,no_key,block B=1000,450.7,998.58,False,block B=250
+all,no_key,hybrid tau=0.30 B=1000,499.5,955.73,False,block B=25; block B=50; block B=100; block B=250
+all,no_key,block B=10000,443.9,9919.86,True,
+all,no_key,hybrid tau=0.30 B=10000,498.0,9492.73,False,block B=25; block B=50; block B=100; block B=250
+all,key,"per-record chain, all B=-",928.6,998.58,False,block B=2; hybrid tau=0.30 B=2; block B=5; hybrid tau=0.30 B=5
+all,key,block B=1,957.2,1,True,
+all,key,hybrid tau=0.30 B=1,996.2,1,False,block B=1
+all,key,block B=2,694.2,2,True,
+all,key,hybrid tau=0.30 B=2,752.3,1.96,True,
+all,key,block B=5,555.6,5.0,True,
+all,key,hybrid tau=0.30 B=5,620.3,4.85,True,
+all,key,block B=10,505.3,10.0,True,
+all,key,hybrid tau=0.30 B=10,573.2,9.65,False,block B=5
+all,key,block B=25,466.8,25.0,True,
+all,key,hybrid tau=0.30 B=25,541.4,24.05,False,block B=10
+all,key,block B=50,495.4,50.0,False,block B=25
+all,key,hybrid tau=0.30 B=50,529.5,48.05,False,block B=10; block B=25
+all,key,block B=100,456.7,100.0,True,
+all,key,hybrid tau=0.30 B=100,504.5,96.02,False,block B=25; block B=50
+all,key,block B=250,446.5,249.91,True,
+all,key,hybrid tau=0.30 B=250,523.1,239.81,False,block B=10; block B=25; block B=50; block B=100
+all,key,block B=500,453.6,499.75,False,block B=250
+all,key,hybrid tau=0.30 B=500,507.5,479.42,False,block B=10; block B=25; block B=50; block B=100
+all,key,block B=1000,450.7,998.58,False,block B=250
+all,key,hybrid tau=0.30 B=1000,499.5,957.75,False,block B=25; block B=50; block B=100; block B=250
+all,key,block B=10000,443.9,9919.86,True,
+all,key,hybrid tau=0.30 B=10000,498.0,9508.65,False,block B=25; block B=50; block B=100; block B=250
+bad,no_key,"per-record chain, all B=-",928.6,1,True,
+bad,no_key,block B=1,957.2,1,False,"per-record chain, all B=-"
+bad,no_key,hybrid tau=0.30 B=1,996.2,1,False,"per-record chain, all B=-; block B=1"
+bad,no_key,block B=2,694.2,2,True,
+bad,no_key,hybrid tau=0.30 B=2,752.3,1.68,True,
+bad,no_key,block B=5,555.6,5,True,
+bad,no_key,hybrid tau=0.30 B=5,620.3,3.73,True,
+bad,no_key,block B=10,505.3,10,True,
+bad,no_key,hybrid tau=0.30 B=10,573.2,7.14,False,block B=5
+bad,no_key,block B=25,466.8,25,True,
+bad,no_key,hybrid tau=0.30 B=25,541.4,17.37,False,block B=10
+bad,no_key,block B=50,495.4,50,False,block B=25
+bad,no_key,hybrid tau=0.30 B=50,529.5,34.42,False,block B=10; block B=25
+bad,no_key,block B=100,456.7,100,True,
+bad,no_key,hybrid tau=0.30 B=100,504.5,68.52,False,block B=25; block B=50
+bad,no_key,block B=250,446.5,250,True,
+bad,no_key,hybrid tau=0.30 B=250,523.1,170.83,False,block B=10; block B=25; block B=50; block B=100
+bad,no_key,block B=500,453.6,500,False,block B=250
+bad,no_key,hybrid tau=0.30 B=500,507.5,341.35,False,block B=10; block B=25; block B=50; block B=100
+bad,no_key,block B=1000,450.7,1000,False,block B=250
+bad,no_key,hybrid tau=0.30 B=1000,499.5,682.38,False,block B=25; block B=50; block B=100; block B=250
+bad,no_key,block B=10000,443.9,10000,True,
+bad,no_key,hybrid tau=0.30 B=10000,498.0,6820.9,False,block B=25; block B=50; block B=100; block B=250
+bad,key,"per-record chain, all B=-",928.6,1000,False,block B=2; hybrid tau=0.30 B=2; block B=5; hybrid tau=0.30 B=5
+bad,key,block B=1,957.2,1,True,
+bad,key,hybrid tau=0.30 B=1,996.2,1,False,block B=1
+bad,key,block B=2,694.2,2,True,
+bad,key,hybrid tau=0.30 B=2,752.3,1.72,True,
+bad,key,block B=5,555.6,5,True,
+bad,key,hybrid tau=0.30 B=5,620.3,3.86,True,
+bad,key,block B=10,505.3,10,True,
+bad,key,hybrid tau=0.30 B=10,573.2,7.42,False,block B=5
+bad,key,block B=25,466.8,25,True,
+bad,key,hybrid tau=0.30 B=25,541.4,17.99,False,block B=10
+bad,key,block B=50,495.4,50,False,block B=25
+bad,key,hybrid tau=0.30 B=50,529.5,35.6,False,block B=10; block B=25
+bad,key,block B=100,456.7,100,True,
+bad,key,hybrid tau=0.30 B=100,504.5,70.6,False,block B=25; block B=50
+bad,key,block B=250,446.5,250,True,
+bad,key,hybrid tau=0.30 B=250,523.1,175.34,False,block B=10; block B=25; block B=50; block B=100
+bad,key,block B=500,453.6,500,False,block B=250
+bad,key,hybrid tau=0.30 B=500,507.5,350.03,False,block B=10; block B=25; block B=50; block B=100
+bad,key,block B=1000,450.7,1000,False,block B=250
+bad,key,hybrid tau=0.30 B=1000,499.5,698.51,False,block B=25; block B=50; block B=100; block B=250
+bad,key,block B=10000,443.9,10000,True,
+bad,key,hybrid tau=0.30 B=10000,498.0,6943.25,False,block B=25; block B=50; block B=100; block B=250

@@ -47,9 +47,9 @@ MAC_FIELDS = ch.FIELDS + ["mac"]
 
 
 def mac_of(row, prev_mac, key):
-    """Метка записи = HMAC-SHA256(ключ, запись + метка предыдущей записи)."""
-    payload = ch.record_to_text(row) + "|" + prev_mac
-    return hmac.new(key, payload.encode("utf-8"), hashlib.sha256).hexdigest()
+    """Метка записи = HMAC-SHA256(ключ, запись + метка предыдущей записи); поля кодируются
+    однозначно, с длиной перед каждым (ch.record_bytes)."""
+    return hmac.new(key, ch.record_bytes(row, [prev_mac]), hashlib.sha256).hexdigest()
 
 
 def write_hmac_chain(rows, log_path, anchor_path, key):
@@ -77,26 +77,40 @@ def read_anchors(anchor_path):
         return {int(r["count"]): r["mac"] for r in csv.DictReader(a)}
 
 
-def verify_hmac_chain(log_path, anchor_path, key):
+def verify_hmac_chain(log_path, anchor_path, key, complete=True):
     """
-    Проверка журнала. Возвращает (True, "") или (False, причина).
-      - метка каждой записи пересчитывается с ключом;
+    Проверка журнала. Возвращает (статус, причина):
+      True  - всё подтверждено;
+      False - найдено нарушение;
+      None  - нарушений нет, но есть НЕПОДТВЕРЖДЁННЫЙ ХВОСТ: записи после последней
+              внешней точки (только для растущего журнала, complete=False). None ложно
+              при проверке `if ok`, поэтому хвост никогда не сойдёт за общий успех.
+    Что проверяется:
+      - метка каждой записи пересчитывается с ключом (пустая или отсутствующая метка = нарушение);
       - в местах контрольных точек метка сверяется с внешним хранилищем;
-      - если записей меньше, чем зафиксировано в последней точке, значит
-        хвост обрезан.
+      - записей меньше, чем в последней точке: хвост обрезан;
+      - записей БОЛЬШЕ, чем в последней точке: у завершённого журнала (последняя точка
+        ставится при его закрытии) это дописанные записи, нарушение; у растущего журнала
+        это ещё не подтверждённый хвост. Раньше этот случай считался успехом (ошибка,
+        найденная внешней проверкой).
     """
     anchors = read_anchors(anchor_path)
     prev, n = ch.GENESIS, 0
     with open(log_path, encoding="utf-8") as f:
         for n, row in enumerate(csv.DictReader(f), start=1):
             expected = mac_of(row, prev, key)
-            if not hmac.compare_digest(expected, row["mac"]):
+            if not hmac.compare_digest(expected, row.get("mac") or ""):
                 return False, f"метка записи № {n} не сходится"
             prev = row["mac"]
             if n in anchors and anchors[n] != prev:
                 return False, f"запись № {n} не совпадает с контрольной точкой"
-    if n < max(anchors):
-        return False, f"журнал обрезан: {n} записей, зафиксировано {max(anchors)}"
+    last = max(anchors) if anchors else 0
+    if n < last:
+        return False, f"журнал обрезан: {n} записей, зафиксировано {last}"
+    if n > last:
+        if complete:
+            return False, f"записи {last + 1}..{n} не подтверждены внешней точкой (дописаны после закрытия журнала)"
+        return None, f"неподтверждённый хвост: записи {last + 1}..{n}"
     return True, ""
 
 
@@ -211,7 +225,11 @@ def attack_tests(rows):
         for cnt, m in sorted(anchors.items()):
             if cnt <= 10000:
                 wa.writerow([cnt, m])
-    new = new_verdict(TMP_LOG, TMP_ANCHOR)
+    # Журнал здесь РАСТУЩИЙ (последняя точка ещё не выгружена), поэтому проверка в режиме
+    # complete=False. Подмену внутри хвоста схема увидеть не может (граница схемы), но после
+    # исправления проверка сообщает, что хвост не подтверждён, а не «всё в порядке».
+    ok, why = verify_hmac_chain(TMP_LOG, TMP_ANCHOR, KEY, complete=False)
+    new = ("ПОДМЕНА ПРОПУЩЕНА, " + why) if ok is None else ("ПРОПУЩЕНА" if ok else "обнаружена (" + why + ")")
     print(f"  {'7. ключ украден, подмена после последней контрольной точки':58} "
           f"{'пропущена':16} {new}")
 

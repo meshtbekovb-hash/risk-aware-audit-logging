@@ -50,15 +50,30 @@ def load_rows(path, limit):
     return rows
 
 
-def record_to_text(row):
-    """Превращает запись в строку, от которой считается хеш."""
-    return "|".join(row[k] for k in FIELDS)
+def encode_fields(values):
+    """
+    Однозначное кодирование списка строк в байты: перед каждым полем пишется его длина в
+    байтах и двоеточие, например ["ab", "c"] -> b"2:ab1:c".
+    Раньше поля склеивались через "|", и тогда user="a|b", pc="c" и user="a", pc="b|c"
+    давали одну и ту же строку, то есть один и тот же тег (ошибка найдена внешней
+    проверкой). С длиной перед каждым полем разные наборы полей всегда дают разные байты.
+    """
+    out = []
+    for v in values:
+        b = v.encode("utf-8")
+        out.append(str(len(b)).encode("ascii") + b":" + b)
+    return b"".join(out)
+
+
+def record_bytes(row, extra=()):
+    """Байты записи для хеша/HMAC: поля FIELDS по порядку плюс служебные значения extra
+    (например, тег предыдущей записи). Каждое поле со своей длиной, см. encode_fields."""
+    return encode_fields([row[k] for k in FIELDS] + list(extra))
 
 
 def entry_hash(row, prev_hash):
-    """Хеш записи = SHA-256 от (содержимое записи + хеш предыдущей)."""
-    payload = record_to_text(row) + "|" + prev_hash
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    """Хеш записи = SHA-256 от (содержимое записи + хеш предыдущей), однозначно закодированных."""
+    return hashlib.sha256(record_bytes(row, [prev_hash])).hexdigest()
 
 
 def write_plain(rows, path):

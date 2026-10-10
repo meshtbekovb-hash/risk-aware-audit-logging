@@ -62,7 +62,7 @@ def write_block_hmac(rows, log_path, tags_path, key, block):
         in_block = count = idx = 0
         for r in rows:
             w.writerow([r[k] for k in ch.FIELDS])
-            h.update(ch.record_to_text(r).encode("utf-8") + b"\n")
+            h.update(ch.record_bytes(r))                # однозначное кодирование полей
             in_block += 1
             count += 1
             if in_block == block:                       # блок закрыт: фиксируем метку
@@ -81,34 +81,73 @@ def read_tags(tags_path):
         return [(int(r["block"]), int(r["count"]), r["tag"]) for r in csv.DictReader(t)]
 
 
-def verify_block(log_path, tags_path, key, block):
+def verify_block(log_path, tags_path, key, block, complete=True):
     """
-    Проверка блочной схемы. Возвращает (True, "") или (False, причина).
+    Проверка блочной схемы. Возвращает (статус, причина):
+      True  - все записи подтверждены внешними метками;
+      False - найдено нарушение;
+      None  - нарушений нет, но есть НЕПОДТВЕРЖДЁННЫЙ ХВОСТ (только complete=False, растущий
+              журнал): записи после последнего блока с внешней меткой. None ложно при
+              проверке `if ok`, поэтому хвост не сойдёт за общий успех.
     Локализация: только номер блока (до block записей), а не одна запись.
+
+    Исправление после внешней проверки: раньше блок без внешней метки молча пропускался, и
+    дописанные в конец записи без меток давали (True, ""). Теперь:
+      - у каждого закрытого блока ДОЛЖНА быть внешняя метка, и число записей в ней должно
+        совпадать с фактическим;
+      - у завершённого журнала метка обязательна и для неполного последнего блока, а число
+        меток должно равняться числу блоков;
+      - у растущего журнала записи после последней метки возвращаются как неподтверждённый хвост.
     """
     tags = {b: (c, tag) for b, c, tag in read_tags(tags_path)}
+    max_idx = max(tags, default=0)                  # номер последнего блока с внешней меткой
     prev = ch.GENESIS
     h = hmac.new(key, prev.encode("utf-8"), hashlib.sha256)
     in_block = count = idx = 0
+    confirmed = 0                                   # сколько записей подтверждено метками
+
+    def check_block(tag_now):
+        """Сверка только что закрытого блока idx. Возвращает None, если всё в порядке,
+        иначе (статус, причина) для немедленного возврата."""
+        nonlocal confirmed
+        first = count - in_block + 1
+        if idx <= max_idx:                          # внутри подтверждённой части метка обязательна
+            if idx not in tags:
+                return False, f"у блока {idx} (записи {first}..{count}) нет внешней метки"
+            if tags[idx][1] != tag_now or tags[idx][0] != count:
+                return False, f"блок {idx} (записи {first}..{count}) не совпал с внешней меткой"
+            confirmed = count
+            return None
+        if complete:                                # после последней метки: у закрытого журнала так нельзя
+            return False, f"записи {first}..{count} не подтверждены внешней меткой (дописаны после закрытия журнала)"
+        return None                                 # растущий журнал: это хвост, сообщим в конце
+
     with open(log_path, encoding="utf-8") as f:
         for row in csv.DictReader(f):
-            h.update(ch.record_to_text(row).encode("utf-8") + b"\n")
+            h.update(ch.record_bytes(row))
             in_block += 1
             count += 1
             if in_block == block:
                 idx += 1
                 tag = h.hexdigest()
-                if idx in tags and tags[idx][1] != tag:
-                    return False, f"блок {idx} (записи {count - block + 1}..{count}) не совпал с внешней меткой"
-                prev = tag
+                bad = check_block(tag)
+                if bad:
+                    return bad
+                prev = tags[idx][1] if idx in tags else tag
                 h = hmac.new(key, prev.encode("utf-8"), hashlib.sha256)
                 in_block = 0
-    if in_block:
+    if in_block:                                    # неполный последний блок
         idx += 1
-        if idx in tags and tags[idx][1] != h.hexdigest():
-            return False, f"последний блок {idx} не совпал с внешней меткой"
-    if tags and count < max(c for c, _ in tags.values()):
-        return False, f"журнал обрезан: {count} записей, зафиксировано {max(c for c, _ in tags.values())}"
+        bad = check_block(h.hexdigest())
+        if bad:
+            return bad
+    last = max((c for c, _ in tags.values()), default=0)
+    if count < last:
+        return False, f"журнал обрезан: {count} записей, зафиксировано {last}"
+    if complete and len(tags) != idx:
+        return False, f"меток {len(tags)}, а блоков в журнале {idx}"
+    if confirmed < count:
+        return None, f"неподтверждённый хвост: записи {confirmed + 1}..{count}"
     return True, ""
 
 
@@ -174,7 +213,11 @@ def attack_tests(rows, block):
     bad = list(long_rows)
     bad[10499] = flip(long_rows[10499])
     write_block_hmac(bad, P_BLOCKLOG, os.path.join(TMP, "bb_open.csv"), KEY, block)
-    print(f"  7. ключ украден, подмена в открытом блоке: {verdict(P_BLOCKLOG, P_BLOCKTAGS)}")
+    # Журнал растущий (блок 11 ещё открыт) - проверка в режиме complete=False. Подмену в
+    # открытом блоке схема не видит (граница схемы), но хвост больше не выдаётся за подтверждённый.
+    ok, why = verify_block(P_BLOCKLOG, P_BLOCKTAGS, KEY, block, complete=False)
+    v7 = ("ПОДМЕНА ПРОПУЩЕНА, " + why) if ok is None else ("ПРОПУЩЕНА" if ok else "обнаружена (" + why + ")")
+    print(f"  7. ключ украден, подмена в открытом блоке: {v7}")
 
 
 def main():
