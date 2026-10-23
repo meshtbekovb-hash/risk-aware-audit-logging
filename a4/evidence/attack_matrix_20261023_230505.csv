@@ -1,0 +1,103 @@
+attack_id,attack,column,scheme,adversary,expected,observed,expected_group,observed_group,outcome_match,code_match,prototype_verdict
+1,Modify one record,sha_asis,sha,asis,D,D,detected,detected,True,True,обнаружена
+1,Modify one record,sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+1,Modify one record,hmac_A1,hmac,A1,R,R,detected,detected,True,True,обнаружена (метка записи № 5000 не сходится)
+1,Modify one record,hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+1,Modify one record,block_A1,block,A1,B,B,detected,detected,True,True,обнаружена (блок 5 (записи 4001..5000) не совпал с внешней меткой)
+1,Modify one record,block_A2,block,A2,,,not tested,not tested,True,True,
+2,Modify and recompute without key,sha_asis,sha,asis,,,not tested,not tested,True,True,
+2,Modify and recompute without key,sha_recomp,sha,recomp,M,M,missed,missed,True,True,пропущена
+2,Modify and recompute without key,hmac_A1,hmac,A1,R,R,detected,detected,True,True,обнаружена (метка записи № 1 не сходится)
+2,Modify and recompute without key,hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+2,Modify and recompute without key,block_A1,block,A1,B,B,detected,detected,True,True,обнаружена (блок 5 (записи 4001..5000) не совпал с внешней меткой)
+2,Modify and recompute without key,block_A2,block,A2,,,not tested,not tested,True,True,
+3,Truncate last 100 records,sha_asis,sha,asis,M,M,missed,missed,True,True,пропущена
+3,Truncate last 100 records,sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+3,Truncate last 100 records,hmac_A1,hmac,A1,D,D,detected,detected,True,True,"обнаружена (журнал обрезан: 9900 записей, зафиксировано 10000)"
+3,Truncate last 100 records,hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+3,Truncate last 100 records,block_A1,block,A1,B,B,detected,detected,True,True,обнаружена (блок 10 (записи 9001..9900) не совпал с внешней меткой)
+3,Truncate last 100 records,block_A2,block,A2,,,not tested,not tested,True,True,
+4,Delete one record,sha_asis,sha,asis,D,D,detected,detected,True,True,обнаружена
+4,Delete one record,sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+4,Delete one record,hmac_A1,hmac,A1,R,R,detected,detected,True,True,обнаружена (метка записи № 5000 не сходится)
+4,Delete one record,hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+4,Delete one record,block_A1,block,A1,B,B,detected,detected,True,True,обнаружена (блок 5 (записи 4001..5000) не совпал с внешней меткой)
+4,Delete one record,block_A2,block,A2,,,not tested,not tested,True,True,
+5,Swap two records,sha_asis,sha,asis,D,D,detected,detected,True,True,обнаружена
+5,Swap two records,sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+5,Swap two records,hmac_A1,hmac,A1,R,R,detected,detected,True,True,обнаружена (метка записи № 5000 не сходится)
+5,Swap two records,hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+5,Swap two records,block_A1,block,A1,B,B,detected,detected,True,True,обнаружена (блок 5 (записи 4001..5000) не совпал с внешней меткой)
+5,Swap two records,block_A2,block,A2,,,not tested,not tested,True,True,
+6,Modify and recompute with stolen key,sha_asis,sha,asis,,,not tested,not tested,True,True,
+6,Modify and recompute with stolen key,sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+6,Modify and recompute with stolen key,hmac_A1,hmac,A1,,,not tested,not tested,True,True,
+6,Modify and recompute with stolen key,hmac_A2,hmac,A2,C,C,detected,detected,True,True,обнаружена (запись № 5000 не совпадает с контрольной точкой)
+6,Modify and recompute with stolen key,block_A1,block,A1,,,not tested,not tested,True,True,
+6,Modify and recompute with stolen key,block_A2,block,A2,B,B,detected,detected,True,True,обнаружена (блок 5 (записи 4001..5000) не совпал с внешней меткой)
+7,"Change after last checkpoint, stolen key",sha_asis,sha,asis,,,not tested,not tested,True,True,
+7,"Change after last checkpoint, stolen key",sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+7,"Change after last checkpoint, stolen key",hmac_A1,hmac,A1,,,not tested,not tested,True,True,
+7,"Change after last checkpoint, stolen key",hmac_A2,hmac,A2,U,U,unconfirmed tail,unconfirmed tail,True,True,"ПОДМЕНА ПРОПУЩЕНА, неподтверждённый хвост: записи 10001..10500"
+7,"Change after last checkpoint, stolen key",block_A1,block,A1,,,not tested,not tested,True,True,
+7,"Change after last checkpoint, stolen key",block_A2,block,A2,U,U,unconfirmed tail,unconfirmed tail,True,True,"ПОДМЕНА ПРОПУЩЕНА, неподтверждённый хвост: записи 10001..10500"
+8,Insert a record,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 5002
+8,Insert a record,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+8,Insert a record,hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 5002 не сходится
+8,Insert a record,hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 6000 не совпадает с контрольной точкой
+8,Insert a record,block_A1,block,A1,B,B,detected,detected,True,True,блок 6 (записи 5001..6000) не совпал с внешней меткой
+8,Insert a record,block_A2,block,A2,B,B,detected,detected,True,True,блок 6 (записи 5001..6000) не совпал с внешней меткой
+9,Delete a block,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 4001
+9,Delete a block,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+9,Delete a block,hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 4001 не сходится
+9,Delete a block,hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 5000 не совпадает с контрольной точкой
+9,Delete a block,block_A1,block,A1,B,B,detected,detected,True,True,блок 5 (записи 4001..5000) не совпал с внешней меткой
+9,Delete a block,block_A2,block,A2,B,B,detected,detected,True,True,блок 5 (записи 4001..5000) не совпал с внешней меткой
+10,Swap two blocks,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 2001
+10,Swap two blocks,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+10,Swap two blocks,hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 2001 не сходится
+10,Swap two blocks,hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 3000 не совпадает с контрольной точкой
+10,Swap two blocks,block_A1,block,A1,B,B,detected,detected,True,True,блок 3 (записи 2001..3000) не совпал с внешней меткой
+10,Swap two blocks,block_A2,block,A2,B,B,detected,detected,True,True,блок 3 (записи 2001..3000) не совпал с внешней меткой
+11,Replay an old block,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 8001
+11,Replay an old block,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+11,Replay an old block,hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 8001 не сходится
+11,Replay an old block,hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 9000 не совпадает с контрольной точкой
+11,Replay an old block,block_A1,block,A1,B,B,detected,detected,True,True,блок 9 (записи 8001..9000) не совпал с внешней меткой
+11,Replay an old block,block_A2,block,A2,B,B,detected,detected,True,True,блок 9 (записи 8001..9000) не совпал с внешней меткой
+12,"Splice block from other log, same key",sha_asis,sha,asis,,,not tested,not tested,True,True,
+12,"Splice block from other log, same key",sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+12,"Splice block from other log, same key",hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 8001 не сходится
+12,"Splice block from other log, same key",hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 9000 не совпадает с контрольной точкой
+12,"Splice block from other log, same key",block_A1,block,A1,B,B,detected,detected,True,True,блок 9 (записи 8001..9000) не совпал с внешней меткой
+12,"Splice block from other log, same key",block_A2,block,A2,B,B,detected,detected,True,True,блок 9 (записи 8001..9000) не совпал с внешней меткой
+13,Change timestamp only,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 5000
+13,Change timestamp only,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+13,Change timestamp only,hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 5000 не сходится
+13,Change timestamp only,hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 5000 не совпадает с контрольной точкой
+13,Change timestamp only,block_A1,block,A1,B,B,detected,detected,True,True,блок 5 (записи 4001..5000) не совпал с внешней меткой
+13,Change timestamp only,block_A2,block,A2,B,B,detected,detected,True,True,блок 5 (записи 4001..5000) не совпал с внешней меткой
+14,Modify three records in three blocks,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 1500
+14,Modify three records in three blocks,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+14,Modify three records in three blocks,hmac_A1,hmac,A1,R,R,detected,detected,True,True,"записи № [1500, 4500, 8500]"
+14,Modify three records in three blocks,hmac_A2,hmac,A2,C,C,detected,detected,True,True,запись № 2000 не совпадает с контрольной точкой
+14,Modify three records in three blocks,block_A1,block,A1,B,B,detected,detected,True,True,"блоки [2, 5, 9]"
+14,Modify three records in three blocks,block_A2,block,A2,B,B,detected,detected,True,True,блок 2 (записи 1001..2000) не совпал с внешней меткой
+15,Corrupt one checkpoint (store only),sha_asis,sha,asis,NA,NA,n/a,n/a,True,True,н/п (нет контрольных точек)
+15,Corrupt one checkpoint (store only),sha_recomp,sha,recomp,,,not tested,not tested,True,True,
+15,Corrupt one checkpoint (store only),hmac_A1,hmac,A1,C,C,detected,detected,True,True,запись № 5000 не совпадает с контрольной точкой
+15,Corrupt one checkpoint (store only),hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+15,Corrupt one checkpoint (store only),block_A1,block,A1,B,B,detected,detected,True,True,блок 5 (записи 4001..5000) не совпал с внешней меткой
+15,Corrupt one checkpoint (store only),block_A2,block,A2,,,not tested,not tested,True,True,
+16,Roll back log and checkpoints (A1+A4),sha_asis,sha,asis,,,not tested,not tested,True,True,
+16,Roll back log and checkpoints (A1+A4),sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+16,Roll back log and checkpoints (A1+A4),hmac_A1,hmac,A1,M,M,missed,missed,True,True,-
+16,Roll back log and checkpoints (A1+A4),hmac_A2,hmac,A2,,,not tested,not tested,True,True,
+16,Roll back log and checkpoints (A1+A4),block_A1,block,A1,M,M,missed,missed,True,True,-
+16,Roll back log and checkpoints (A1+A4),block_A2,block,A2,,,not tested,not tested,True,True,
+17,Append 1000 records to closed log,sha_asis,sha,asis,R,R,detected,detected,True,True,запись № 10001
+17,Append 1000 records to closed log,sha_recomp,sha,recomp,M,M,missed,missed,True,True,-
+17,Append 1000 records to closed log,hmac_A1,hmac,A1,R,R,detected,detected,True,True,метка записи № 10001 не сходится
+17,Append 1000 records to closed log,hmac_A2,hmac,A2,D,D,detected,detected,True,True,записи 10001..11000 не подтверждены внешней точкой (дописаны после закрытия журнала)
+17,Append 1000 records to closed log,block_A1,block,A1,D,D,detected,detected,True,True,записи 10001..11000 не подтверждены внешней меткой (дописаны после закрытия журнала)
+17,Append 1000 records to closed log,block_A2,block,A2,D,D,detected,detected,True,True,записи 10001..11000 не подтверждены внешней меткой (дописаны после закрытия журнала)

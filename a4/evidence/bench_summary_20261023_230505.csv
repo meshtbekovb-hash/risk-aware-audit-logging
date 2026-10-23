@@ -1,0 +1,5 @@
+scheme,n,mean_ms,sd_ms,ci95_lo_ms,ci95_hi_ms,median_ms,ratio_to_ordinary_mean,overhead_vs_ordinary_pct,original_script_mean_ms,original_script_ci95,original_ratio_to_ordinary,diff_original_vs_a4_pct,original_inside_a4_ci
+ordinary,20,26.41,4.19,24.45,28.37,25.95,1.0,0.0,25.05,24.18-25.92,1.0,-5.1,True
+sha256_chain,20,61.07,2.86,59.73,62.41,61.5,2.313,131.3,62.05,60.23-63.88,2.477,1.6,True
+hmac_chain,20,75.12,3.44,73.51,76.73,74.27,2.845,184.5,75.75,72.95-78.56,3.024,0.8,True
+block_hmac,20,46.94,2.71,45.67,48.21,46.61,1.778,77.8,46.75,44.65-48.84,1.866,-0.4,True

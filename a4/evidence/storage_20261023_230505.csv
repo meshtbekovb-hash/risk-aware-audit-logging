@@ -1,0 +1,7 @@
+scheme,tag_encoding,records_bytes,tags_bytes,block_metadata_bytes,checkpoints_bytes,total_bytes,overhead_pct,sum_check
+ordinary,none,714939,0,0,0,714939,0.0,True
+sha256_chain,hex,714939,1300021,0,0,2014960,181.837,True
+hmac_chain,hex,714939,650004,0,722,1365665,91.018,True
+hmac_chain,binary,714939,320000,0,722,1035661,44.86,True
+block_hmac,hex,714939,654,95,0,715688,0.105,True
+block_hmac,binary,714939,320,80,0,715339,0.056,True

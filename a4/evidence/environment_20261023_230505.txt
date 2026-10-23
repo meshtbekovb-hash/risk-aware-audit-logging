@@ -1,0 +1,61 @@
+Run started: 2026-10-23T23:05:05
+Command: C:\Users\<user>\AppData\Local\Programs\Python\Python314\python.exe a4/run_a4.py
+
+== System (read from the machine)
+platform.platform(): Windows-11-10.0.26200-SP0
+platform.machine(): AMD64
+OS: �������� Windows 11 Pro 10.0.26200 build 26200
+CPU: AMD Ryzen 7 250 w/ Radeon 780M Graphics, cores 8, logical 16, max MHz 3301
+RAM bytes: 24995295232
+Disks: SAMSUNG MZVMX1T0HCLD-00BH1 (SSD)
+Battery: BatteryStatus=2, charge=98%   (BatteryStatus 2 = on AC power, 1 = on battery)
+Power plan: GUID �奬� ��⠭��: fb5220ff-7e1a-47aa-9a42-50ffbf45c673  (HP Optimized (Modern Standby)?)
+Temp dir used by the prototype for log files: C:\Users\<user>\AppData\Local\Temp
+
+== Python and libraries
+Python: 3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)]
+Executable: C:\Users\<user>\AppData\Local\Programs\Python\Python314\python.exe
+pandas: 3.0.3
+numpy: 2.4.6
+scipy: 1.17.1
+matplotlib: 3.10.9
+pytest: 9.1.1
+hashlib, hmac, time.perf_counter, csv: Python standard library (perf_counter resolution 1e-07 s)
+
+== Prototype code
+Path: C:\Users\<user>\audit-paper
+Local HEAD: 72deddba4b6993533bbf9add13356c9b29d38722 2026-10-11 03:51:19 +0500 Paper, second review round: single-key comparison in the main configuration, Table II with the adversary-favourable append variant, concrete trade-off instead of a threshold, conservative p-values, abstract with the main conclusion
+git status --porcelain: clean
+Local HEAD is not the GitHub commit d753388: the local repository was restructured (code/, tests/, results/) and has later commits. Comparison by file content:
+Reference commit (GitHub): d75338816759a5d4db2075770d71174eb531c990
+  https://github.com/meshtbekovb-hash/risk-aware-audit-logging
+A4 files vs d753388 (line endings normalised):
+  cert_block_baseline.py: identical
+  cert_chain.py: differs, known difference (путь к device.csv); 4 changed lines:
+      -DEVICE_FILE = "device.csv"
+      +import paths
+      +
+      +DEVICE_FILE = paths.DEVICE_R42
+  cert_chain_hmac.py: identical
+  cert_performance_revised.py: identical
+  cert_tamper_extended.py: differs, known difference (добавлен вызов E3); 9 changed lines:
+      +import cert_tamper_evolving as tev
+      +    # =================================================================
+      +    # Эксперимент E3: те же атаки и строки Table V для гибрида с эволюцией ключа и,
+      +    # для сравнения, для объединённого гибрида с одним ключом (cert_tamper_evolving.py)
+      +    # =================================================================
+      +    print("ГИБРИДЫ (эксперимент E3)")
+      +    tev.run(rows, rows_b, rows_all[:10500], record)
+      +    print()
+      +
+Other local files: 29 identical to d753388, 8 differ, 37 not in d753388
+  differ: code/audit_independent.py, code/cert_ablation.py, code/cert_block_size_pareto.py, code/cert_chain.py, code/cert_file.py, code/cert_r52_external_test.py, code/cert_tamper_extended.py, code/requirements.txt
+  not in d753388: code/bench_stats.py, code/bench_unified.py, code/cert_baselines.py, code/cert_e6_dev.py, code/cert_e6_frozen.py, code/cert_hybrid_evolving.py, code/cert_hybrid_merged.py, code/cert_online.py, code/cert_online_window.py, code/cert_r52_search_area.py, code/cert_table7_timer.py, code/cert_tamper_evolving.py, code/cert_tamper_online.py, code/cert_timed.py, code/check_paper_numbers.py, code/e2_merged_window.py, code/fig3_time_vs_area.py, code/fig8_block_size_pareto.py, code/fig_detection.py, code/make_paper_latex_tables.py, code/make_paper_numbers.py, code/make_paper_tables.py, code/measure_commit_cost.py, code/paper_derived.py, code/paths.py, code/run_all.py, code/storage_bytes.py, tests/conftest.py, tests/test_baselines.py, tests/test_bench.py, tests/test_hybrid_evolving.py, tests/test_hybrid_merged.py, tests/test_metrics.py, tests/test_online.py, tests/test_tamper.py, tests/test_tamper_online.py, tests/test_timed.py
+Mechanism check result: PASS - mechanisms identical to d753388
+
+== Input data
+device.csv: C:\Users\<user>\audit-paper\data\r4.2\device.csv
+size bytes: 28982749
+SHA-256 whole file: 39925627f0219c77dbb39e5a416715298ef47c2fd25322aa44c66cb128d7291d
+SHA-256 header + first 10,000 records (the benchmark/attack log): e24433bdac3c1b02b039036533b46f5439a26c414acbd5e6ddce64a4a0b7578f
+SHA-256 header + first 11,500 records (incl. 'other log' and appended tail): d1c1367cd4581f93e477dc7894f5d4f42bc35821d2af7badf2504952aff0f0ac

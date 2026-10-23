@@ -1,0 +1,4 @@
+comparison,n_pairs,pairs_a_slower,median_ratio_a_over_b,min_ratio,max_ratio,median_diff_ms,W_plus,W_minus,statistic,p_exact,rank_biserial_r,skewness_of_differences,p_holm
+hmac_chain vs block_hmac,20,20,1.59,1.493,1.826,27.72,210.0,0,0.0,1.9073486328125e-06,1.0,1.923,5.7220458984375e-06
+hmac_chain vs ordinary,20,20,2.91,2.083,3.676,48.21,210.0,0,0.0,1.9073486328125e-06,1.0,-0.268,5.7220458984375e-06
+block_hmac vs ordinary,20,20,1.772,1.334,2.301,21.27,210.0,0,0.0,1.9073486328125e-06,1.0,-0.745,5.7220458984375e-06

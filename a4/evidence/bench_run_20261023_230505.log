@@ -1,0 +1,94 @@
+[23:05:39.716] Step 4. Write-time benchmark  (run 20261023_230505)
+[23:05:40.966] Parameters: N=10000, B=1000, checkpoint every 1000, warm-up rounds=3, timed rounds=20, timer=time.perf_counter, no fsync
+[23:05:40.966] Order of schemes per round: Latin square rows ordinary,sha256_chain,block_hmac,hmac_chain; sha256_chain,hmac_chain,ordinary,block_hmac; hmac_chain,block_hmac,sha256_chain,ordinary; block_hmac,ordinary,hmac_chain,sha256_chain
+[23:05:41.110]   warm-up round 1 done (not counted)
+[23:05:41.317]   warm-up round 2 done (not counted)
+[23:05:41.523]   warm-up round 3 done (not counted)
+[23:05:41.752]   round  1: block_hmac= 46.19  ordinary= 24.46  hmac_chain= 81.00  sha256_chain= 63.11 ms
+[23:05:41.961]   round  2: ordinary= 27.08  sha256_chain= 62.60  block_hmac= 46.27  hmac_chain= 72.17 ms
+[23:05:42.158]   round  3: sha256_chain= 57.98  hmac_chain= 73.09  ordinary= 21.13  block_hmac= 44.79 ms
+[23:05:42.386]   round  4: hmac_chain= 80.18  block_hmac= 53.72  sha256_chain= 62.05  ordinary= 31.78 ms
+[23:05:42.595]   round  5: block_hmac= 48.84  ordinary= 25.04  hmac_chain= 76.44  sha256_chain= 58.91 ms
+[23:05:42.810]   round  6: ordinary= 28.14  sha256_chain= 59.72  block_hmac= 50.25  hmac_chain= 76.15 ms
+[23:05:43.026]   round  7: sha256_chain= 64.58  hmac_chain= 81.22  ordinary= 26.10  block_hmac= 44.49 ms
+[23:05:43.232]   round  8: hmac_chain= 75.00  block_hmac= 46.95  sha256_chain= 62.61  ordinary= 20.41 ms
+[23:05:43.439]   round  9: block_hmac= 45.69  ordinary= 26.54  hmac_chain= 72.93  sha256_chain= 61.59 ms
+[23:05:43.661]   round 10: ordinary= 35.30  sha256_chain= 66.70  block_hmac= 47.11  hmac_chain= 73.53 ms
+[23:05:43.864]   round 11: sha256_chain= 61.70  hmac_chain= 71.03  ordinary= 23.59  block_hmac= 46.25 ms
+[23:05:44.061]   round 12: hmac_chain= 71.24  block_hmac= 43.20  sha256_chain= 57.80  ordinary= 24.58 ms
+[23:05:44.262]   round 13: block_hmac= 47.56  ordinary= 21.51  hmac_chain= 76.28  sha256_chain= 55.53 ms
+[23:05:44.467]   round 14: ordinary= 30.31  sha256_chain= 59.97  block_hmac= 42.69  hmac_chain= 71.34 ms
+[23:05:44.696]   round 15: sha256_chain= 65.41  hmac_chain= 79.46  ordinary= 33.61  block_hmac= 50.44 ms
+[23:05:44.908]   round 16: hmac_chain= 75.35  block_hmac= 48.31  sha256_chain= 62.25  ordinary= 25.80 ms
+[23:05:45.126]   round 17: block_hmac= 49.77  ordinary= 30.01  hmac_chain= 78.84  sha256_chain= 59.84 ms
+[23:05:45.327]   round 18: ordinary= 23.70  sha256_chain= 61.42  block_hmac= 44.51  hmac_chain= 71.32 ms
+[23:05:45.522]   round 19: sha256_chain= 56.52  hmac_chain= 72.49  ordinary= 21.20  block_hmac= 44.67 ms
+[23:05:45.732]   round 20: hmac_chain= 73.39  block_hmac= 47.08  sha256_chain= 61.10  ordinary= 27.81 ms
+
+[23:05:45.734] --- cert_performance_revised.main(), unchanged (sequential order: 20 runs of one scheme, then the next) ---
+[23:05:45.734] Загрузка device.csv...
+[23:05:45.755] записей: 10000
+
+[23:05:45.755] ====================================================================================================
+[23:05:45.755] 1+3. Сравнение схем: 20 повторов (+3 прогревочных, не считаются), обычная запись и запись с fsync
+[23:05:45.755] ====================================================================================================
+[23:05:46.337]   обычный журнал         обычная :    25.05 мс  std   1.86  95% ДИ [24.18; 25.92]
+[23:05:47.173]   обычный журнал         fsync   :    35.58 мс  std   8.29  95% ДИ [31.70; 39.46]
+[23:05:48.603]   SHA-256 цепочка        обычная :    62.05 мс  std   3.89  95% ДИ [60.23; 63.88]
+[23:05:50.287]   SHA-256 цепочка        fsync   :    71.54 мс  std   3.18  95% ДИ [70.05; 73.03]
+[23:05:52.035]   HMAC поэлементная      обычная :    75.75 мс  std   6.00  95% ДИ [72.95; 78.56]
+[23:05:54.474]   HMAC поэлементная      fsync   :   108.32 мс  std  85.47  95% ДИ [68.32; 148.32]
+[23:05:55.547]   блочная HMAC B=1000    обычная :    46.75 мс  std   4.48  95% ДИ [44.65; 48.84]
+[23:05:56.964]   блочная HMAC B=1000    fsync   :    60.14 мс  std   6.89  95% ДИ [56.92; 63.37]
+
+[23:05:56.964] ====================================================================================================
+[23:05:56.964] 4. Контрольные точки внутри общего замера или нет - проверка изоляцией
+[23:05:56.964] ====================================================================================================
+[23:05:56.964] По коду (cert_chain_hmac.py, cert_block_baseline.py): и записи, и внешний файл пишутся ВНУТРИ одного вызова (один 'with open(...) as f, open(...) as a:'), поэтому время контрольных точек УЖЕ включено в замер выше. Ниже - оценка ИХ ДОЛИ отдельно.
+
+[23:06:01.262]   HMAC поэлементная: полный замер 74.39 мс = записи-без-точек 69.54 мс + (пересчёт для точек, отдельно) 42.40 мс
+[23:06:01.262]   Доля, объяснимая контрольными точками (грубая оценка сверху, т.к. HMAC пересчитывается дважды в отдельных прогонах): 4.85 мс (6.5%)
+[23:06:03.354]   Блочная HMAC: полный замер 45.12 мс = записи-без-меток 25.65 мс + (пересчёт для меток, отдельно) 20.51 мс
+[23:06:03.354]   Доля, объяснимая метками блоков: 19.47 мс (43.2%)
+
+[23:06:03.357] Таблица времени сохранена: results_revision/performance_revised.csv
+
+[23:06:03.357] ====================================================================================================
+[23:06:03.357] 2+5. Хранение тегов (hex/бинарно) и разбивка объёма по частям
+[23:06:03.357] ====================================================================================================
+[23:06:03.368]   обычный журнал         (-      ): записи    714939  теги         0  метаданные блоков       0  точки       0  итого (расчёт=714939, факт=714939, совпало)
+[23:06:03.412]   SHA-256 цепочка        (hex    ): записи    714939  теги   1300021  метаданные блоков       0  точки       0  итого (расчёт=2014960, факт=2014960, совпало)
+[23:06:03.490]   HMAC поэлементная      (hex    ): записи    714939  теги    650004  метаданные блоков       0  точки     722  итого (расчёт=1365665, факт=1365665, совпало)
+[23:06:03.539]   HMAC поэлементная      (бинарно): записи    714939  теги    320000  метаданные блоков       0  точки     722  итого (расчёт=1035661, факт=1035661, совпало)
+[23:06:03.594]   блочная HMAC B=1000    (hex    ): записи    714939  теги       654  метаданные блоков      95  точки       0  итого (расчёт=715688, факт=715688, совпало)
+[23:06:03.594]   блочная HMAC B=1000    (бинарно): записи    714939  теги       320  метаданные блоков      80  точки       0  итого (расчёт=715339, факт=715339, совпало)
+
+[23:06:03.595] Таблица объёма сохранена: results_revision/storage_breakdown.csv
+
+[23:06:03.595] 6. Характеристики машины:
+[23:06:03.595]    Процессор: AMD Ryzen 7 250 (mobile, Zen 4), 8 ядер / 16 потоков (Get-CimInstance Win32_Processor)
+[23:06:03.595]    ОЗУ: 23.3 ГБ (24 995 295 232 байт, Get-CimInstance Win32_ComputerSystem)
+[23:06:03.595]    Диск: SSD (SAMSUNG MZVMX1T0HCLD, Get-PhysicalDisk MediaType)
+[23:06:03.595]    ОС: Windows-11-10.0.26200-SP0
+[23:06:03.595]    Python: 3.14.5
+
+[23:06:03.643] BENCHMARK SUMMARY (10,000 records, 20 timed rounds, Latin-square order)
+[23:06:03.643] scheme          mean ms            95% CI  x ordinary  orig. script    diff
+[23:06:03.644] ordinary          26.41    24.45-28.37          1.00x        25.05   -5.1%
+[23:06:03.644] sha256_chain      61.07    59.73-62.41          2.31x        62.05    1.6%
+[23:06:03.644] hmac_chain        75.12    73.51-76.73          2.85x        75.75    0.8%
+[23:06:03.644] block_hmac        46.94    45.67-48.21          1.78x        46.75   -0.4%
+
+[23:06:03.644] PAIRED TESTS (Wilcoxon signed-rank, exact, two-sided; Holm over 3 comparisons)
+[23:06:03.644]   hmac_chain vs block_hmac   median ratio 1.590 (range 1.49-1.83), a slower in 20/20 pairs, p = 1.91e-06, Holm p = 5.72e-06, r = 1.0
+[23:06:03.644]   hmac_chain vs ordinary     median ratio 2.910 (range 2.08-3.68), a slower in 20/20 pairs, p = 1.91e-06, Holm p = 5.72e-06, r = 1.0
+[23:06:03.644]   block_hmac vs ordinary     median ratio 1.772 (range 1.33-2.30), a slower in 20/20 pairs, p = 1.91e-06, Holm p = 5.72e-06, r = 1.0
+
+[23:06:03.644] STORAGE (bytes, from cert_performance_revised.py)
+[23:06:03.644]   ordinary       none       714939  +0.0%
+[23:06:03.644]   sha256_chain   hex       2014960  +181.837%
+[23:06:03.644]   hmac_chain     hex       1365665  +91.018%
+[23:06:03.644]   hmac_chain     binary    1035661  +44.86%
+[23:06:03.644]   block_hmac     hex        715688  +0.105%
+[23:06:03.644]   block_hmac     binary     715339  +0.056%
+[23:06:03.646] Benchmark finished in 23.9 s
