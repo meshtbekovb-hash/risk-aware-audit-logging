@@ -17,5 +17,5 @@ The report is a separate LaTeX document; this folder holds the code and the evid
 `run_a4.py` expects the restructured layout of the prototype used for the run (`code/`, `tests/`, `data/r4.2/device.csv`),
 passed with `--proto <path>` (default `~/audit-paper`). The CERT data are not included.
 
-The tests in `../tests/` cover the hash chains, the verifiers and the metrics. In this repository's flat layout run them with
-`AUDIT_CODE_DIR=. python -m pytest tests` from the repository root.
+The tests in `../tests/` cover the hash chains, the verifiers and the metrics. Run them with
+`python -m pytest tests` from the repository root.

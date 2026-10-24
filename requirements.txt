@@ -1,3 +1,6 @@
-# Only needed to run cert_plots.py / cert_curves.py (the two figure-generating scripts).
-# Everything else in this repository uses only the Python standard library.
+# The analysis scripts use only the Python standard library.
+# matplotlib: cert_plots.py / cert_curves.py and a4/make_figures.py (figures).
+# pytest: tests/.  scipy: paired tests in a4/run_a4.py.
 matplotlib==3.10.9
+pytest==9.1.1
+scipy==1.17.1

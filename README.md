@@ -14,26 +14,49 @@ see [Getting the data](#getting-the-data) below).
 
 ## Repository layout
 
+The scripts stay flat in the repository root: they import each other as modules
+(`import cert_ablation as ab`) and read and write their CSVs and figures by fixed
+names relative to the root, so they must be run from there.
+
 ```
 .
-├── cert_*.py                    - analysis scripts (see "Scripts" below)
-├── step1_generate.py             - early synthetic-log prototype, not used in the paper
-├── step2_detect.py, step3_tamper.py  - same, kept for history
-├── audit_independent.py          - independent re-implementation that re-derives the
-│                                   headline numbers from raw CSVs without importing any
-│                                   of the other modules, as a cross-check
-├── check_figures.py              - verifies that what is actually drawn on each figure
-│                                   matches the result tables (0 discrepancies expected)
-├── check_report_numbers.py       - cross-checks headline numbers against logs/tables
-├── *_results.csv                 - result tables from the main (r4.2) experiment
-├── curves_points.csv             - points behind fig6/fig7
-├── results_revision/              - results from the post-review revision round
-│                                   (external r5.2 test, baselines, ablations, tamper
-│                                   tests, performance, localization; see the .md file
-│                                   in that folder for metric definitions)
-├── logs/                          - captured stdout of every run, for traceability
-└── fig*.png                       - the five figures used in the paper (single-column
-                                    IEEE width, 300 dpi)
+│  Detection (risk score, splits, user-level results)
+├── cert_ablation.py, cert_leakcheck.py, cert_honest_split.py
+├── cert_user_level.py, cert_user_level2.py, cert_observed.py, cert_insider_level.py
+├── cert_file.py, cert_file_user_level.py      - supplementary file.csv experiment
+├── cert_r52_external_test.py, cert_r52_fpr_normalized.py, cert_scenario4_diagnostics.py
+├── cert_detection_metrics.py, cert_weight_sensitivity.py, cert_single_feature_config.py
+│
+│  Integrity mechanisms and tamper evidence
+├── cert_chain.py                - ordinary log and unkeyed SHA-256 chain
+├── cert_chain_hmac.py           - per-record HMAC chain, checkpoints, verifier, basic attacks
+├── cert_block_baseline.py       - chained block HMAC tags and their verifier
+├── cert_tamper_extended.py      - ten further attacks, both schemes
+├── cert_performance_revised.py  - write time and storage benchmark
+├── cert_bugfix_repro.py         - before/after check of the verification fix
+│
+│  Risk-aware protection, cost and localisation
+├── cert_riskaware.py, cert_riskaware_test.py, cert_selection_baselines.py
+├── cert_block_size_pareto.py, cert_pareto_sensitivity.py
+├── cert_localization_realtime.py, cert_score_granularity.py, cert_coverage_concentration.py
+│
+│  Figures and cross-checks
+├── cert_plots.py, cert_curves.py  - draw fig2, fig4, fig6, fig7, fig8
+├── check_figures.py             - verifies that what is drawn matches the result tables
+├── check_report_numbers.py      - cross-checks headline numbers against logs/tables
+├── audit_independent.py         - independent re-implementation that re-derives the
+│                                  headline numbers from raw CSVs, as a cross-check
+│
+│  Outputs
+├── *_results.csv, curves_points.csv  - result tables of the main (r4.2) experiment
+├── fig*.png                     - the five figures used in the paper (300 dpi)
+├── results_revision/            - results of the review rounds (see metric_definitions.md)
+├── logs/                        - captured stdout of the runs that produced the CSVs
+│
+├── tests/                       - unit tests of the chains, verifiers and metrics
+│                                  (no CERT data needed: python -m pytest tests)
+└── a4/                          - course Assignment 4: empirical study of the tamper-evidence
+                                   mechanism, its run script and evidence (see a4/README.md)
 ```
 
 ## Getting the data
@@ -75,12 +98,11 @@ Software Engineering Institute), which is not included here.
   `cert_curves.py`. Tested with matplotlib 3.10.9.
 
 ```bash
-pip install matplotlib   # only needed for the two plotting scripts
+pip install -r requirements.txt   # pinned versions; see the comments in the file
 ```
 
-No `requirements.txt`/virtual environment is strictly required beyond that one optional
-package; see `requirements.txt` in this folder for a pinned version if you want exact
-reproducibility of the plots.
+`pytest` is needed only for `tests/`, and SciPy only for the paired tests in
+`a4/run_a4.py`.
 
 ## Running
 
@@ -121,10 +143,10 @@ core scripts first):
     protection coverage), `cert_coverage_concentration.py` (how the protected
     malicious records are distributed over days, insiders and scenarios).
 
-`step1_generate.py`/`step2_detect.py`/`step3_tamper.py` and `cert_experiment.py`/
-`cert_experiment_full.py` are early prototypes (a synthetic-log generator and an
-early single-file version of the ablation experiment); they are kept for history but
-are not part of the reported results.
+The early prototypes that were not part of the reported results (a synthetic-log
+generator `step1_generate.py`/`step2_detect.py`/`step3_tamper.py` and the single-file
+`cert_experiment.py`/`cert_experiment_full.py`) were removed from the working tree; they
+remain in the history, for example at commit `d753388`.
 
 ## Reproducibility notes
 

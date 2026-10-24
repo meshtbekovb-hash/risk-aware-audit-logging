@@ -29,7 +29,7 @@ plt.rcParams.update({"font.family": "serif", "font.size": 8, "axes.linewidth": 0
                      "pdf.fonttype": 42, "savefig.bbox": "tight", "savefig.pad_inches": 0.02})
 
 SCHEME_LABEL = {"ordinary": "Ordinary\nlog", "sha256_chain": "SHA-256\nchain",
-                "hmac_chain": "Per-record\nHMAC", "block_hmac": "Block HMAC\nB = 1000"}
+                "hmac_chain": "Per-record\nHMAC", "block_hmac": "Block tags\nB = 1000"}
 COLUMN_LABEL = {"sha_asis": "SHA-256\nas is", "sha_recomp": "SHA-256\nrecomputed",
                 "hmac_A1": "HMAC chain\nA1", "hmac_A2": "HMAC chain\nA2",
                 "block_A1": "Block tags\nA1", "block_A2": "Block tags\nA2"}
@@ -37,6 +37,9 @@ COLUMN_LABEL = {"sha_asis": "SHA-256\nas is", "sha_recomp": "SHA-256\nrecomputed
 GROUP_STYLE = {"detected": ("0.88", "", "black"), "missed": ("0.25", "", "white"),
                "unconfirmed tail": ("white", "////", "black"), "n/a": ("white", "", "0.4"),
                "not tested": ("white", "", "0.6")}
+# Клетки, где прогон не проверял схему, но прототип печатает вердикт константой (не проверкой):
+# SHA-256 в атаках 6 и 7 из cert_chain_hmac.attack_tests (см. inventory.md). Подписываются n.t., а не «–».
+NOT_TESTED_BY_PROTOTYPE = {("6", "sha_asis"), ("6", "sha_recomp"), ("7", "sha_asis"), ("7", "sha_recomp")}
 
 
 def read(name, run):
@@ -74,6 +77,8 @@ def attack_matrix(run):
                 ax.add_patch(Rectangle((j + 0.03, i + 0.05), 0.94, 0.9, facecolor="none", hatch=hatch,
                                        edgecolor="0.45", linewidth=0))
             text = r["observed"] if r["observed"] else "–"
+            if (aid, col) in NOT_TESTED_BY_PROTOTYPE and not r["observed"]:
+                text = "n.t."
             if r["observed"] == "NA":
                 text = "n/a"
             if (r["expected"] or r["observed"]) and r["code_match"] != "True":
@@ -81,7 +86,7 @@ def attack_matrix(run):
             weight = "bold" if group in ("missed", "unconfirmed tail") else "normal"
             ax.text(j + 0.5, i + 0.5, text, ha="center", va="center", color=ink,
                     fontsize=7.5, fontweight=weight,
-                    bbox=dict(boxstyle="square,pad=0.15", fc="white", ec="none") if hatch else None)
+                    bbox=dict(boxstyle="square,pad=0.35", fc="white", ec="none") if hatch else None)
     ax.set_xlim(0, len(cols))
     ax.set_ylim(len(attacks), 0)
     ax.set_xticks([j + 0.5 for j in range(len(cols))], [COLUMN_LABEL[c] for c in cols])
@@ -100,7 +105,7 @@ def attack_matrix(run):
 
 def write_time(run):
     rows = read("bench_summary", run)
-    fig, ax = plt.subplots(figsize=(3.5, 2.3))
+    fig, ax = plt.subplots(figsize=(4.2, 2.3))
     hatches = ["", "\\\\\\\\", "////", "...."]
     x = range(len(rows))
     means = [float(r["mean_ms"]) for r in rows]
